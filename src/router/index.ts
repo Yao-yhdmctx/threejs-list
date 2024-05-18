@@ -11,8 +11,26 @@ const router = createRouter({
         {
           path: 'oneView',
           name: 'oneView',
-          meta: { title: '第一天' },
+          meta: { title: '例子一', requiresAuth: true },
           component: () => import('@/views/oneView.vue')
+        },
+        {
+          path: 'twoView',
+          name: 'twoView',
+          meta: { title: '例子二', requiresAuth: true },
+          component: () => import('@/views/twoView.vue')
+        },
+        {
+          path: 'threeView',
+          name: 'threeView',
+          meta: { title: '例子三', requiresAuth: true },
+          component: () => import('@/views/threeView.vue')
+        },
+        {
+          path: 'fourView',
+          name: 'fourView',
+          meta: { title: '例子四', requiresAuth: true },
+          component: () => import('@/views/fourView.vue')
         }
       ]
     },

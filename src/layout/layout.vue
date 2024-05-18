@@ -24,5 +24,6 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 const route = useRoute()
-let routeList = route.matched.splice(1, 1)
+let routeList = route.matched[0].children
+console.log(routeList)
 </script>
