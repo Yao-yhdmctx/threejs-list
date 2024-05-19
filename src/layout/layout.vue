@@ -11,8 +11,8 @@
         text-color="#fff"
       >
         <el-menu-item v-for="(val, index) of routeList" :key="index" :index="val.name">
-          <el-icon><icon-menu /></el-icon>
-          <span>{{ val.meta.title }}</span>
+          <el-icon></el-icon>
+          <span>{{ val.meta?.title }}</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

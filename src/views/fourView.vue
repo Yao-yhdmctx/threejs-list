@@ -1,49 +1,50 @@
 <script setup lang="ts">
 import * as THREE from 'three'
-import WebGL from 'three/examples/jsm/capabilities/WebGL.js'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+import fontJson from '@/assets/font/helvetiker_regular.typeface.json'
 import { onMounted, ref } from 'vue'
 const oneDiv = ref<HTMLDivElement | null>(null)
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000)
-camera.position.set(0, 0, 100)
-camera.lookAt(0, 0, 0)
+// camera.position.z = 5
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(500, 500)
 onMounted(() => {
-  // 创建线
-  const points = []
-  points.push(new THREE.Vector3(-10, 0, 0))
-  points.push(new THREE.Vector3(0, 10, 0))
-  points.push(new THREE.Vector3(10, 0, 0))
-  console.log(points, 'points')
+  // 创建文字几何体
+  let loader = new FontLoader()
+  let font = loader.parse(fontJson)
+  console.log(font, 'font')
 
-  const geometry = new THREE.BufferGeometry().setFromPoints(points)
-  const material = new THREE.LineBasicMaterial({ color: 0x0000ff })
-  const line = new THREE.Line(geometry, material)
-  scene.add(line)
+  const material = new THREE.MeshBasicMaterial({ color: 0xfaf4f4 })
+  const textGeometry = new TextGeometry('cityName', {
+    font: font,
+    size: 0.8, //字体大小
+    height: 0.1 //字体高度
+  })
+  const textMesh = new THREE.Mesh(textGeometry, [
+    new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    new THREE.MeshBasicMaterial({ color: 0xfaf4f4 })
+  ])
+  // textMesh.castShadow = true
+  textMesh.position.y += 15
+  textMesh.position.z -= 40
+  textMesh.position.x = -8
+  textMesh.position.y = -0.5
+  scene.add(textMesh)
   oneDiv.value?.appendChild(renderer.domElement)
 
   // 渲染
   const animate = () => {
-    line.rotation.x += 0.01
-    line.rotation.y += 0.01
     requestAnimationFrame(animate)
     renderer.render(scene, camera)
   }
-  // WebGL兼容性判断
-  console.log(WebGL.isWebGLAvailable())
-
-  if (WebGL.isWebGLAvailable()) {
-    animate()
-  } else {
-    const warning = WebGL.getWebGLErrorMessage()
-    oneDiv.value?.appendChild(warning)
-  }
+  animate()
 })
 </script>
 
 <template>
-  <span>加载模型</span>
+  <span>添加文字</span>
   <div ref="oneDiv" class="oneDiv"></div>
 </template>
 <style>
