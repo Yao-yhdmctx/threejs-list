@@ -7,29 +7,24 @@ import { onMounted, ref } from 'vue'
 const oneDiv = ref<HTMLDivElement | null>(null)
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000)
-// camera.position.z = 5
+camera.position.z = 100
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(500, 500)
 onMounted(() => {
   // 创建文字几何体
   let loader = new FontLoader()
   let font = loader.parse(fontJson)
-  console.log(font, 'font')
-
   const material = new THREE.MeshBasicMaterial({ color: 0xfaf4f4 })
   const textGeometry = new TextGeometry('cityName', {
     font: font,
-    size: 0.8, //字体大小
+    size: 10, //字体大小
     height: 0.1 //字体高度
   })
-  const textMesh = new THREE.Mesh(textGeometry, [
-    new THREE.MeshBasicMaterial({ color: 0xffffff }),
-    new THREE.MeshBasicMaterial({ color: 0xfaf4f4 })
-  ])
-  // textMesh.castShadow = true
+  const textMesh = new THREE.Mesh(textGeometry, material)
+  textMesh.castShadow = true
   textMesh.position.y += 15
-  textMesh.position.z -= 40
-  textMesh.position.x = -8
+  textMesh.position.z -= 50
+  textMesh.position.x = -29
   textMesh.position.y = -0.5
   scene.add(textMesh)
   oneDiv.value?.appendChild(renderer.domElement)
