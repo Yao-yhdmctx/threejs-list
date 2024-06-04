@@ -9,6 +9,8 @@ camera.position.z = 10
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(500, 500)
 onMounted(() => {
+  console.log(123);
+  
   // 引入模型
   const loader = new GLTFLoader()
   loader.load(
