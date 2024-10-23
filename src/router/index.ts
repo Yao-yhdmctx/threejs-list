@@ -37,6 +37,12 @@ const router = createRouter({
           name: 'fiveView',
           meta: { title: '例子五', requiresAuth: true },
           component: () => import('@/views/fiveView.vue')
+        },
+        {
+          path: 'sixView',
+          name: 'sixView',
+          meta: { title: '例子六', requiresAuth: true },
+          component: () => import('@/views/sixView.vue')
         }
       ]
     },
