@@ -21,6 +21,7 @@ export default defineConfig({
     //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
     // }),
   ],
+  assetsInclude: ['**/*.fbx'], // 👈 关键：告诉 Vite 把 .fbx 当作静态资源
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

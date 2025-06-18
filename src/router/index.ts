@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory,createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -43,6 +43,18 @@ const router = createRouter({
           name: 'sixView',
           meta: { title: '例子六', requiresAuth: true },
           component: () => import('@/views/sixView.vue')
+        },
+        {
+          path: 'sevenView',
+          name: 'sevenView',
+          meta: { title: '例子七', requiresAuth: true },
+          component: () => import('@/views/sevenView.vue')
+        },
+        {
+          path: 'eightView',
+          name: 'eightView',
+          meta: { title: '例子八', requiresAuth: true },
+          component: () => import('@/views/eightView.vue')
         }
       ]
     },
