@@ -55,6 +55,12 @@ const router = createRouter({
           name: 'eightView',
           meta: { title: '例子八', requiresAuth: true },
           component: () => import('@/views/eightView.vue')
+        },
+        {
+          path: 'nineView',
+          name: 'nineView',
+          meta: { title: '例子九', requiresAuth: true },
+          component: () => import('@/views/nineView.vue')
         }
       ]
     },

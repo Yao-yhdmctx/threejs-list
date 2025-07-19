@@ -3,6 +3,7 @@
   <div class="buttons">
     <button @click="playAnimationByName('mixamo.com')">播放动画 1 (mixamo.com)</button>
     <button @click="playAnimationByName('Take 001')">播放动画 2 (Take 001)</button>
+    <button @click="playAnimationByName('RaiseHand')">播放动画 3 (抬手)</button>
   </div>
 </template>
 
@@ -17,8 +18,8 @@ let scene, camera, renderer, mixer, clock, controls, animationId
 let model
 let currentAction
 
-// 载入时缓存动画剪辑
 let animationsClips = []
+let rightArmBone = null // 👈 我们将缓存右臂骨骼
 
 onMounted(() => {
   initThree()
@@ -61,8 +62,14 @@ function initThree() {
     scene.add(model)
 
     mixer = new THREE.AnimationMixer(model)
-
     animationsClips = object.animations
+
+    // 查找右臂骨骼（可能要根据模型不同调整名字）
+    model.traverse((child) => {
+      if (child.isBone && child.name.includes('RightArm')) {
+        rightArmBone = child
+      }
+    })
 
     console.log('动画数量:', animationsClips.length)
     console.log(
@@ -70,7 +77,6 @@ function initThree() {
       animationsClips.map((clip) => clip.name)
     )
 
-    // 默认播放第一个动画
     if (animationsClips.length > 0) {
       playAnimationByName(animationsClips[0].name)
     }
@@ -78,10 +84,21 @@ function initThree() {
 }
 
 function playAnimationByName(name) {
-  if (!mixer || !model || !animationsClips.length) return
+  if (!mixer || !model) return
+
+  if (name === 'RaiseHand') {
+    const clip = createRaiseHandAnimation()
+    playClip(clip)
+    return
+  }
+
   const clip = animationsClips.find((c) => c.name === name)
   if (!clip) return
 
+  playClip(clip)
+}
+
+function playClip(clip) {
   const newAction = mixer.clipAction(clip)
 
   if (currentAction && currentAction !== newAction) {
@@ -91,7 +108,36 @@ function playAnimationByName(name) {
   } else {
     newAction.reset().play()
   }
+
   currentAction = newAction
+}
+
+// 👇 手动创建一个抬右臂的动画
+function createRaiseHandAnimation() {
+  if (!rightArmBone) {
+    console.warn('找不到 RightArm 骨骼')
+    return
+  }
+
+  const times = [0, 1, 2] // 时间点
+  const values = [
+    0,
+    0,
+    0,
+    1, // 初始：无旋转
+    0,
+    0,
+    0.707,
+    0.707, // 抬起（大约90度绕Z轴旋转）
+    0,
+    0,
+    0,
+    1 // 回到初始
+  ]
+
+  const track = new THREE.QuaternionKeyframeTrack(`${rightArmBone.name}.quaternion`, times, values)
+
+  return new THREE.AnimationClip('RaiseHand', 2, [track])
 }
 
 function animate() {
